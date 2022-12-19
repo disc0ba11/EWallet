@@ -341,7 +341,12 @@ func send(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	if strings.Count(strings.ToLower(string(body)), "from") != 1 || strings.Count(strings.ToLower(string(body)), "to") != 1 || strings.Count(strings.ToLower(string(body)), "amount") != 1 || !strings.Contains(strings.ToLower(string(body)), "from") || !strings.Contains(strings.ToLower(string(body)), "to") || !strings.Contains(strings.ToLower(string(body)), "amount") {
+	if strings.Count(strings.ToLower(string(body)), `"from"`) != 1 ||
+		strings.Count(strings.ToLower(string(body)), `"to"`) != 1 ||
+		strings.Count(strings.ToLower(string(body)), `"amount"`) != 1 ||
+		!strings.Contains(strings.ToLower(string(body)), `"from"`) ||
+		!strings.Contains(strings.ToLower(string(body)), `"to"`) ||
+		!strings.Contains(strings.ToLower(string(body)), `"amount"`) {
 		fmt.Fprint(w, "Wrong POST body.")
 		log.Print(errors.New("wrong post body"))
 		return
