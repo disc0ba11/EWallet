@@ -122,7 +122,6 @@ func dbTransaction(db *sql.DB, from string, to string, amount string) (int, erro
 	var toId int64
 	var balance string
 	var hasDigit bool = false
-	amountFloat, _ := new(big.Float).SetString(amount)
 	if strings.Contains(amount, `.`) {
 		if len(strings.Split(amount, ".")) >= 2 {
 			tail := strings.Split(amount, ".")[1]
@@ -145,6 +144,7 @@ func dbTransaction(db *sql.DB, from string, to string, amount string) (int, erro
 	if hasDigit {
 		return 1, errors.New("wrong amount format")
 	}
+	amountFloat, _ := new(big.Float).SetString(amount)
 	rows, err := db.Query(`SELECT * FROM wallets WHERE address = ?`, from)
 	if err != nil {
 		log.Fatal(err)
