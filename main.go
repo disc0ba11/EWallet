@@ -137,8 +137,6 @@ func dbTransaction(db *sql.DB, from string, to string, amount string) (int, erro
 		return 1, errors.New("wrong amount format")
 	}
 	for i := 0; i < len(amount); i++ {
-		fmt.Print(amount[i])
-		fmt.Print(" ")
 		if (amount[i] < '0' || amount[i] > '9') && amount[i] != '.' {
 			hasDigit = true
 		}
@@ -179,7 +177,7 @@ func dbTransaction(db *sql.DB, from string, to string, amount string) (int, erro
 		transaction.To = toWallet.address
 		transaction.Amount = amount
 		dbInsert_transaction(db, transaction)
-		fmt.Println("Success!\n--------------")
+		fmt.Println("Success!")
 		return 0, nil
 	case -1:
 		return 2, errors.New("not enough money")
@@ -343,11 +341,19 @@ func send(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
+	if strings.Count(strings.ToLower(string(body)), "from") != 1 || strings.Count(strings.ToLower(string(body)), "to") != 1 || strings.Count(strings.ToLower(string(body)), "amount") != 1 || !strings.Contains(strings.ToLower(string(body)), "from") || !strings.Contains(strings.ToLower(string(body)), "to") || !strings.Contains(strings.ToLower(string(body)), "amount") {
+		fmt.Fprint(w, "Wrong POST body.")
+		log.Print(errors.New("wrong post body"))
+		return
+	}
 	jsonBody := &transaction{}
-	_ = json.Unmarshal(body, jsonBody)
-	fmt.Println("Transaction")
-	fmt.Println("From: " + jsonBody.From + "\nTo: " + jsonBody.To + "\nAmount: " + jsonBody.Amount)
-	fmt.Println("--------------")
+	err = json.Unmarshal(body, jsonBody)
+	if err != nil {
+		fmt.Fprint(w, "Wrong POST body.")
+		log.Print(errors.New("wrong post body"))
+		return
+	}
+	fmt.Println("Transaction From: " + jsonBody.From + " To: " + jsonBody.To + " Amount: " + jsonBody.Amount)
 	mutex.Lock()
 	errCode, err := dbTransaction(db, jsonBody.From, jsonBody.To, jsonBody.Amount)
 	mutex.Unlock()
