@@ -2,8 +2,8 @@ EWallet
 
 Программа написана на языке golang
 Для её компиляции у вас должны быть установлены:
-→ Пакет go: https://go.dev/doc/install
-→ Библиотека go-sqlite3: https://github.com/mattn/go-sqlite3
+1. Пакет go: https://go.dev/doc/install
+2. Библиотека go-sqlite3: https://github.com/mattn/go-sqlite3
 
 Прежде, чем запустить программу, следует выполнить ряд действий:
 1. Разместить программу в отдельной папке
