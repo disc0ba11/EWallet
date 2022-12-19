@@ -14,6 +14,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -34,9 +35,10 @@ type transaction struct {
 }
 
 func randToken() string {
-	b := make([]byte, 32)
+	rand.Seed(time.Now().UnixNano())
+	b := make([]byte, 64)
 	rand.Read(b)
-	return fmt.Sprintf("%x", b)
+	return fmt.Sprintf("%x", b)[:64]
 }
 func exists(path string) (bool, error) {
 	_, err := os.Stat(path)

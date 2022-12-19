@@ -1,0 +1,9 @@
+FROM golang:latest
+RUN mkdir -p /go/src/ewallet
+WORKDIR /go/src/ewallet
+ADD main.go /go/src/ewallet
+RUN go mod init
+RUN go mod tidy
+RUN go install
+RUN go build -o EWallet
+CMD tar -cf - EWallet

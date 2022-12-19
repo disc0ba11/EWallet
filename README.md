@@ -71,12 +71,13 @@
 Для Debian так же можно установить man-страницы, включающие документацию для GNU/Linux:
 
 	sudo apt-get install manpages-dev
-Затем скачайте библиотеку go-sqlite3:
+Затем инициализируйте go.mod в склонированном репозитории:
 
-	go get github.com/mattn/go-sqlite3
-И установите:
+	go mod init
+	go mod tidy
+И установите зависимость:
 
-	go install github.com/mattn/go-sqlite3
+	go install
 После этого можно будет скомпилировать программу при помощи команды:
 
 	go build -o EWallet
