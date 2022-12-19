@@ -137,6 +137,8 @@ func dbTransaction(db *sql.DB, from string, to string, amount string) (int, erro
 		return 1, errors.New("wrong amount format")
 	}
 	for i := 0; i < len(amount); i++ {
+		fmt.Print(amount[i])
+		fmt.Print(" ")
 		if (amount[i] < '0' || amount[i] > '9') && amount[i] != '.' {
 			hasDigit = true
 		}
@@ -348,6 +350,7 @@ func send(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("--------------")
 	mutex.Lock()
 	errCode, err := dbTransaction(db, jsonBody.From, jsonBody.To, jsonBody.Amount)
+	mutex.Unlock()
 	if err != nil {
 		switch errCode {
 		case 1:
@@ -374,7 +377,6 @@ func send(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	mutex.Unlock()
 }
 
 func main() {
